@@ -31,7 +31,9 @@ if origin=='No':
             
             print('count :',count)
             print('theta: ',theta)
-        loss=(np.matmul(data,theta)+labels)*labels
+            print('theta_0: ', theta_0)
+            print('\n')
+        loss=(np.matmul(data,theta)+theta_0)*labels
         check=np.any(loss<=0)
   
         s_data=(s_data+1)%N
@@ -45,6 +47,7 @@ else:
             
             print('count :',count)
             print('theta: ',theta)
+            print('\n')
         loss=np.matmul(data,theta)*labels
         check=np.any(loss<=0)
   
