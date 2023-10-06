@@ -410,7 +410,7 @@ def bag_of_words(texts, remove_stopword=False):
 
 
 
-def extract_bow_feature_vectors(reviews, indices_by_word, binarize=True):
+def extract_bow_feature_vectors(reviews, indices_by_word, binarize=False):
     """
     Args:
         `reviews` - a list of natural language strings
@@ -430,7 +430,7 @@ def extract_bow_feature_vectors(reviews, indices_by_word, binarize=True):
     if binarize:
         feature_matrix=np.where(feature_matrix>=1,1,0)
         
-        return feature_matrix
+    return feature_matrix
 
 
 

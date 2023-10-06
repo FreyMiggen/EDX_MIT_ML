@@ -14,11 +14,12 @@ train_texts, train_labels = zip(*((sample['text'], sample['sentiment']) for samp
 val_texts, val_labels = zip(*((sample['text'], sample['sentiment']) for sample in val_data))
 test_texts, test_labels = zip(*((sample['text'], sample['sentiment']) for sample in test_data))
 
-dictionary = p1.bag_of_words(train_texts)
+dictionary = p1.bag_of_words(train_texts,remove_stopword=True)
 
 train_bow_features = p1.extract_bow_feature_vectors(train_texts, dictionary)
 val_bow_features = p1.extract_bow_feature_vectors(val_texts, dictionary)
 test_bow_features = p1.extract_bow_feature_vectors(test_texts, dictionary)
+print(train_bow_features.shape)
 
 #-------------------------------------------------------------------------------
 # Problem 5
@@ -106,12 +107,12 @@ test_bow_features = p1.extract_bow_feature_vectors(test_texts, dictionary)
 #-------------------------------------------------------------------------------
 
 # Your code here
-# T=25
-# L=0.01
-# avg_peg_train_accuracy, avg_peg_test_accuracy = \
-#    p1.classifier_accuracy(p1.pegasos, train_bow_features,test_bow_features,train_labels,test_labels,T=T,L=L)
-# print("{:50} {:.4f}".format("Training accuracy for Pegasos:", avg_peg_train_accuracy))
-# print("{:50} {:.4f}".format("Validation accuracy for Pegasos:", avg_peg_test_accuracy))
+T=25
+L=0.01
+avg_peg_train_accuracy, avg_peg_test_accuracy = \
+   p1.classifier_accuracy(p1.pegasos, train_bow_features,test_bow_features,train_labels,test_labels,T=T,L=L)
+print("{:50} {:.4f}".format("Training accuracy for Pegasos:", avg_peg_train_accuracy))
+print("{:50} {:.4f}".format("Validation accuracy for Pegasos:", avg_peg_test_accuracy))
 
 
 # avg_pct_train_accuracy, avg_pct_test_accuracy = \
@@ -124,8 +125,8 @@ test_bow_features = p1.extract_bow_feature_vectors(test_texts, dictionary)
 # accurate algorithm with the optimal choice of hyperparameters.
 #-------------------------------------------------------------------------------
 
-best_theta = p1.pegasos(train_bow_features,train_labels,25,0.01)[0]
-wordlist   = [word for (idx, word) in sorted(zip(dictionary.values(), dictionary.keys()))]
-sorted_word_features = utils.most_explanatory_word(best_theta, wordlist)
-print("Most Explanatory Word Features")
-print(sorted_word_features[:10])
+# best_theta = p1.pegasos(train_bow_features,train_labels,25,0.01)[0]
+# wordlist   = [word for (idx, word) in sorted(zip(dictionary.values(), dictionary.keys()))]
+# sorted_word_features = utils.most_explanatory_word(best_theta, wordlist)
+# print("Most Explanatory Word Features")
+# print(sorted_word_features[:10])
