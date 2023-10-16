@@ -46,7 +46,7 @@ def run_linear_regression_on_MNIST(lambda_factor=1):
 
 
 # Don't run this until the relevant functions in linear_regression.py have been fully implemented.
-print('Linear Regression test_error =', run_linear_regression_on_MNIST(lambda_factor=0.01))
+# print('Linear Regression test_error =', run_linear_regression_on_MNIST(lambda_factor=0.01))
 
 
 #######################################################################
@@ -70,7 +70,7 @@ def run_svm_one_vs_rest_on_MNIST():
     return test_error
 
 
-print('SVM one vs. rest test_error:', run_svm_one_vs_rest_on_MNIST())
+# print('SVM one vs. rest test_error:', run_svm_one_vs_rest_on_MNIST())
 
 
 def run_multiclass_svm_on_MNIST():
@@ -86,7 +86,7 @@ def run_multiclass_svm_on_MNIST():
     return test_error
 
 
-print('Multiclass SVM test_error:', run_multiclass_svm_on_MNIST())
+# print('Multiclass SVM test_error:', run_multiclass_svm_on_MNIST())
 
 #######################################################################
 # 4. Multinomial (Softmax) Regression and Gradient Descent
@@ -119,9 +119,10 @@ def run_softmax_on_MNIST(temp_parameter=1):
 
     # TODO: add your code here for the "Using the Current Model" question in tab 6.
     #      and print the test_error_mod3
+
     return test_error
 
-
+# print('WAITING')
 # print('softmax test_error=', run_softmax_on_MNIST(temp_parameter=1))
 
 # TODO: Find the error rate for temp_parameter = [.5, 1.0, 2.0]
@@ -135,14 +136,46 @@ def run_softmax_on_MNIST(temp_parameter=1):
 
 def run_softmax_on_MNIST_mod3(temp_parameter=1):
     """
-    Trains Softmax regression on digit (mod 3) classifications.
+    Trains Softmax regression on digit (mod 3) classifications.(only modify labels, no training)
 
     See run_softmax_on_MNIST for more info.
     """
     # YOUR CODE HERE
+    train_x, train_y, test_x, test_y = get_MNIST_data()
+
+    test_y_mod3=test_y%3
+    theta=read_pickle_data('theta.pkl.gz')
+    test_pred=get_classification(test_x,theta,temp_parameter)
+    test_pred=test_pred%3
+    return 1 - np.mean(test_pred == test_y_mod3)
+
+
     raise NotImplementedError
+# print('WAITING')
+# print('softmax test_error=', run_softmax_on_MNIST_mod3(temp_parameter=1))
+
+def run_softmax_on_MNIST_mod3_retraining(temp_parameter=1):
+    """
+    Trains Softmax regression on digit (mod 3) classifications.(retraining required)
+
+    See run_softmax_on_MNIST for more info.
+    """
+    # YOUR CODE HERE
+    train_x, train_y, test_x, test_y = get_MNIST_data()
+
+    test_y_mod3=test_y%3
+    train_y_mod3=train_y%3
+    theta, cost_function_history = softmax_regression(train_x, train_y_mod3, temp_parameter, alpha=0.3, lambda_factor=1.0e-4, k=10, num_iterations=150)
 
 
+    write_pickle_data(theta, "./theta_mod3.pkl.gz")
+    plot_cost_function_over_time(cost_function_history)
+    test_error = compute_test_error(test_x, test_y_mod3, theta, temp_parameter)
+
+    return test_error
+
+print('WAITING')
+print('softmax test_error retraining mod 3=', run_softmax_on_MNIST_mod3_retraining(temp_parameter=1))
 # TODO: Run run_softmax_on_MNIST_mod3(), report the error rate
 
 
